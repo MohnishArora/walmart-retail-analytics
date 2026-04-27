@@ -1,7 +1,7 @@
 # Walmart Retail Analytics
 ## Predicting Store-Department Sales and Identifying Underperforming Products
 
-**Tools:** PySpark | Machine Learning Models (Random Forrest, Decision Tree, XGBoost, Regression Models) | Python | Google Colab | Matplotlib | Seaborn
+**Tools:** PySpark | Machine Learning Models (Random Forest, Decision Tree, XGBoost, Regression Models) | Python | Google Colab | Matplotlib | Seaborn
 
 **Dataset:** Walmart Store Sales Forecasting (Kaggle) | 420,000+ weekly records | 45 stores | 99 departments | 2010 to 2012
 
@@ -106,8 +106,7 @@ walmart-retail-analytics/
 │
 ├── walmart_retail_analytics.ipynb       # Full PySpark pipeline: ingestion, cleaning, modeling, BI
 ├── README.md                            # This file
-├── assets/
-│   └── pipeline.gif
+├── pipeline.gif
 ├── data/
 │   └── (Download from Kaggle: Walmart Store Sales Forecasting)
 │
