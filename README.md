@@ -101,8 +101,8 @@ Small stores with high sales are supply chain bottlenecks. These stores physical
 walmart-retail-analytics/
 │
 ├── walmart_retail_analytics.ipynb       # Full PySpark pipeline: ingestion, cleaning, modeling, BI
-├── README.md                         # This file
-│
+├── README.md                            # This file
+├── pipeline_illustration.html           # Animated illustration of events flow
 ├── data/
 │   └── (Download from Kaggle: Walmart Store Sales Forecasting)
 │
