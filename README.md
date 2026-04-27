@@ -8,8 +8,7 @@
 **Result:** XGBoost achieved RMSE of 3,317, outperforming 4 competing models and enabling three actionable business strategies
 
 ![Pipeline Architecture](./pipeline.gif)
-
-## Interactive Architecture Diagram
+### Interactive Architecture Diagram
 
 [![View Architecture Pipeline](https://img.shields.io/badge/View-Interactive%20Pipeline-%2300C7B7?style=for-the-badge&logo=netlify)](https://eloquent-beignet-eb72db.netlify.app/)
 ---
