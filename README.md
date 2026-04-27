@@ -100,7 +100,7 @@ Small stores with high sales are supply chain bottlenecks. These stores physical
 ```
 walmart-retail-analytics/
 │
-├── walmart_retail_analytics.py       # Full PySpark pipeline: ingestion, cleaning, modeling, BI
+├── walmart_retail_analytics.ipynb       # Full PySpark pipeline: ingestion, cleaning, modeling, BI
 ├── README.md                         # This file
 │
 ├── data/
@@ -120,7 +120,7 @@ walmart-retail-analytics/
 
 1. Download the dataset from Kaggle: https://www.kaggle.com/c/walmart-recruiting-store-sales-forecasting
 2. Upload train.csv, features.csv, and stores.csv to your Google Drive
-3. Open walmart_retail_analytics.py in Google Colab
+3. Open walmart_retail_analytics.ipynb in Google Colab
 4. Set the path to your data files in Google Drive correctly in Colab code
 5. Run all cells top to bottom
 
