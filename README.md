@@ -1,18 +1,17 @@
 # Walmart Retail Analytics
 ## Predicting Store-Department Sales and Identifying Underperforming Products
 
-![Pipeline Architecture](./pipeline.gif)
-
-## Interactive Architecture Diagram
-
-[![View Architecture Pipeline](https://img.shields.io/badge/View-Interactive%20Pipeline-%2300C7B7?style=for-the-badge&logo=netlify)](https://eloquent-beignet-eb72db.netlify.app/)
-
 **Tools:** PySpark | Machine Learning Models (Random Forrest, Decision Tree, XGBoost, Regression Models) | Python | Google Colab | Matplotlib | Seaborn
 
 **Dataset:** Walmart Store Sales Forecasting (Kaggle) | 420,000+ weekly records | 45 stores | 99 departments | 2010 to 2012
 
 **Result:** XGBoost achieved RMSE of 3,317, outperforming 4 competing models and enabling three actionable business strategies
 
+![Pipeline Architecture](./pipeline.gif)
+
+## Interactive Architecture Diagram
+
+[![View Architecture Pipeline](https://img.shields.io/badge/View-Interactive%20Pipeline-%2300C7B7?style=for-the-badge&logo=netlify)](https://eloquent-beignet-eb72db.netlify.app/)
 ---
 
 ## The Problem
