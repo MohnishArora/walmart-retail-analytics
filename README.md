@@ -1,9 +1,11 @@
 # Walmart Retail Analytics
 ## Predicting Store-Department Sales and Identifying Underperforming Products
 
-## Interactive Pipeline Diagram
+![Pipeline Architecture](./pipeline.gif)
 
-[![View Pipeline](https://img.shields.io/badge/View-Interactive%20Pipeline-%2300C7B7?style=for-the-badge&logo=netlify)](https://eloquent-beignet-eb72db.netlify.app/)
+## Interactive Architecture Diagram
+
+[![View Architecture Pipeline](https://img.shields.io/badge/View-Interactive%20Pipeline-%2300C7B7?style=for-the-badge&logo=netlify)](https://eloquent-beignet-eb72db.netlify.app/)
 
 **Tools:** PySpark | Machine Learning Models (Random Forrest, Decision Tree, XGBoost, Regression Models) | Python | Google Colab | Matplotlib | Seaborn
 
