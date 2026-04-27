@@ -106,7 +106,8 @@ walmart-retail-analytics/
 │
 ├── walmart_retail_analytics.ipynb       # Full PySpark pipeline: ingestion, cleaning, modeling, BI
 ├── README.md                            # This file
-├── pipeline_illustration.html           # Animated illustration of events flow
+├── assets/
+│   └── pipeline.gif
 ├── data/
 │   └── (Download from Kaggle: Walmart Store Sales Forecasting)
 │
