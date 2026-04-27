@@ -1,0 +1,440 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700&display=swap');
+
+:root {
+  --blue-50: #E6F1FB; --blue-200: #85B7EB; --blue-600: #185FA5; --blue-800: #0C447C;
+  --teal-50: #E1F5EE; --teal-200: #5DCAA5; --teal-600: #0F6E56; --teal-800: #085041;
+  --amber-50: #FAEEDA; --amber-200: #EF9F27; --amber-600: #854F0B; --amber-800: #633806;
+  --coral-50: #FAECE7; --coral-200: #F0997B; --coral-600: #993C1D; --coral-800: #711B13;
+  --purple-50: #EEEDFE; --purple-200: #AFA9EC; --purple-600: #534AB7; --purple-800: #3C3489;
+  --green-50: #EAF3DE; --green-200: #97C459; --green-600: #3B6D11; --green-800: #27500A;
+  --gray-100: #D3D1C7; --gray-200: #B4B2A9; --gray-600: #5F5E5A; --gray-800: #444441;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body { font-family: 'Syne', sans-serif; background: transparent; }
+
+.pipeline {
+  width: 100%; padding: 32px 20px 40px;
+  display: flex; flex-direction: column; gap: 0;
+}
+
+.stage-row {
+  display: flex; align-items: center; gap: 0;
+  opacity: 0; transform: translateY(18px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.stage-row.visible { opacity: 1; transform: translateY(0); }
+
+/* connector lines between stages */
+.v-connector {
+  width: 2px; height: 32px; margin: 0 auto;
+  background: linear-gradient(to bottom, var(--gray-200), var(--gray-100));
+  position: relative; opacity: 0; transition: opacity 0.4s;
+}
+.v-connector.visible { opacity: 1; }
+.v-connector::after {
+  content: ''; position: absolute; bottom: -6px; left: 50%; transform: translateX(-50%);
+  width: 0; height: 0;
+  border-left: 5px solid transparent; border-right: 5px solid transparent;
+  border-top: 7px solid var(--gray-200);
+}
+
+/* stage label */
+.stage-badge {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; font-weight: 500; letter-spacing: 0.08em;
+  color: var(--gray-600); text-transform: uppercase;
+  writing-mode: vertical-rl; text-orientation: mixed;
+  transform: rotate(180deg);
+  width: 36px; flex-shrink: 0; align-self: stretch;
+  display: flex; align-items: center; justify-content: center;
+  border-right: 1px solid var(--gray-100); margin-right: 16px;
+  padding-right: 12px;
+}
+
+.stage-content { flex: 1; }
+
+/* ─── STAGE 1: data sources ─── */
+.sources-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+}
+.source-card {
+  border-radius: 10px; padding: 14px 16px;
+  border: 1px solid;
+  cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+  position: relative; overflow: hidden;
+}
+.source-card:hover { transform: translateY(-2px); }
+.source-card .file-name {
+  font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 500;
+  margin-bottom: 4px;
+}
+.source-card .file-rows { font-size: 12px; opacity: 0.8; margin-bottom: 8px; }
+.source-card .file-desc { font-size: 11px; opacity: 0.65; }
+.source-card .corner-icon {
+  position: absolute; top: 10px; right: 12px;
+  font-size: 18px; opacity: 0.18;
+}
+
+.sc-blue { background: var(--blue-50); border-color: var(--blue-200); color: var(--blue-800); }
+.sc-teal { background: var(--teal-50); border-color: var(--teal-200); color: var(--teal-800); }
+.sc-amber { background: var(--amber-50); border-color: var(--amber-200); color: var(--amber-800); }
+
+/* ─── STAGE 2: ingestion block ─── */
+.ingestion-block {
+  background: var(--teal-50); border: 1px solid var(--teal-200);
+  border-radius: 12px; padding: 18px 22px;
+  display: flex; align-items: center; gap: 20px;
+}
+.ingestion-icon { font-size: 28px; flex-shrink: 0; }
+.ingestion-text .title { font-size: 14px; font-weight: 700; color: var(--teal-800); }
+.ingestion-text .sub { font-size: 12px; color: var(--teal-600); margin-top: 3px; }
+.ingestion-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.chip {
+  font-size: 11px; font-family: 'DM Mono', monospace;
+  background: white; border: 1px solid var(--teal-200);
+  color: var(--teal-700); border-radius: 20px; padding: 3px 10px;
+}
+
+/* ─── STAGE 3: feature engineering ─── */
+.feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.feat-card {
+  border-radius: 10px; padding: 14px 16px; border: 1px solid;
+  transition: transform 0.2s;
+}
+.feat-card:hover { transform: translateY(-2px); }
+.feat-card .feat-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
+.feat-card .feat-items { display: flex; flex-direction: column; gap: 4px; }
+.feat-item { font-size: 11px; font-family: 'DM Mono', monospace; padding: 3px 8px; border-radius: 6px; }
+
+.fc-blue { background: var(--blue-50); border-color: var(--blue-200); color: var(--blue-800); }
+.fc-blue .feat-item { background: rgba(23,95,165,0.1); }
+.fc-purple { background: var(--purple-50); border-color: var(--purple-200); color: var(--purple-800); }
+.fc-purple .feat-item { background: rgba(83,74,183,0.1); }
+.fc-amber { background: var(--amber-50); border-color: var(--amber-200); color: var(--amber-800); }
+.fc-amber .feat-item { background: rgba(133,79,11,0.12); }
+
+/* ─── STAGE 4: model leaderboard ─── */
+.model-leaderboard { display: flex; flex-direction: column; gap: 7px; }
+.model-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px; border-radius: 10px; border: 1px solid var(--gray-100);
+  background: white; transition: transform 0.15s;
+  position: relative; overflow: hidden;
+  cursor: pointer;
+}
+.model-row:hover { transform: translateX(3px); }
+.model-row.winner { border-color: var(--green-200); background: var(--green-50); }
+.winner-badge {
+  font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+  background: var(--green-600); color: white; padding: 2px 7px; border-radius: 20px;
+}
+.model-name { font-size: 13px; font-weight: 600; flex: 1; color: var(--gray-800); }
+.model-row.winner .model-name { color: var(--green-800); }
+.model-rmse-bar-wrap { width: 120px; flex-shrink: 0; }
+.model-rmse-label { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--gray-600); margin-bottom: 3px; }
+.model-row.winner .model-rmse-label { color: var(--green-600); }
+.rmse-bar-track { height: 5px; background: var(--gray-100); border-radius: 3px; overflow: hidden; }
+.rmse-bar-fill { height: 100%; border-radius: 3px; width: 0; transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1); }
+
+/* ─── STAGE 5: business outputs ─── */
+.biz-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.biz-card {
+  border-radius: 12px; padding: 16px 18px; border: 1px solid;
+  cursor: pointer; transition: transform 0.2s;
+}
+.biz-card:hover { transform: translateY(-3px); }
+.biz-card .biz-icon { font-size: 20px; margin-bottom: 8px; }
+.biz-card .biz-title { font-size: 13px; font-weight: 700; margin-bottom: 5px; }
+.biz-card .biz-body { font-size: 11px; line-height: 1.55; opacity: 0.75; }
+.biz-card .biz-kpi {
+  margin-top: 10px; font-family: 'DM Mono', monospace; font-size: 20px; font-weight: 500;
+}
+.biz-card .biz-kpi-label { font-size: 10px; opacity: 0.6; margin-top: 1px; }
+
+.bc-coral { background: var(--coral-50); border-color: var(--coral-200); color: var(--coral-800); }
+.bc-blue { background: var(--blue-50); border-color: var(--blue-200); color: var(--blue-800); }
+.bc-purple { background: var(--purple-50); border-color: var(--purple-200); color: var(--purple-800); }
+
+/* key finding footer */
+.finding-bar {
+  margin-top: 28px; padding: 14px 20px;
+  background: linear-gradient(135deg, var(--amber-50) 0%, var(--coral-50) 100%);
+  border: 1px solid var(--amber-200); border-radius: 12px;
+  display: flex; align-items: center; gap: 12px;
+  opacity: 0; transform: translateY(10px);
+  transition: opacity 0.6s ease 1.8s, transform 0.6s ease 1.8s;
+}
+.finding-bar.visible { opacity: 1; transform: translateY(0); }
+.finding-icon { font-size: 22px; flex-shrink: 0; }
+.finding-text .label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--amber-600); }
+.finding-text .body { font-size: 12px; color: var(--amber-800); margin-top: 2px; line-height: 1.5; }
+
+/* pulse dot for winner */
+@keyframes pulse-ring {
+  0% { box-shadow: 0 0 0 0 rgba(59,109,17,0.4); }
+  70% { box-shadow: 0 0 0 6px rgba(59,109,17,0); }
+  100% { box-shadow: 0 0 0 0 rgba(59,109,17,0); }
+}
+.model-row.winner { animation: pulse-ring 2.5s ease infinite 2s; }
+
+/* animated data flow dots */
+@keyframes flow-dot {
+  0% { opacity: 0; transform: translateY(0); }
+  20% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(28px); }
+}
+.flow-dot {
+  width: 6px; height: 6px; border-radius: 50%; background: var(--teal-200);
+  margin: 0 auto; animation: flow-dot 1.2s ease infinite;
+}
+.flow-dot:nth-child(2) { animation-delay: 0.4s; }
+.flow-dot:nth-child(3) { animation-delay: 0.8s; }
+
+.v-connector-animated {
+  width: 2px; height: 32px; margin: 0 auto;
+  background: var(--gray-100); position: relative;
+  overflow: hidden; opacity: 0; transition: opacity 0.4s;
+  border-radius: 2px;
+}
+.v-connector-animated.visible { opacity: 1; }
+.v-connector-animated::before {
+  content: ''; position: absolute; width: 100%;
+  height: 40%; background: var(--teal-200);
+  animation: slide-down 1.5s linear infinite;
+  border-radius: 2px;
+}
+@keyframes slide-down {
+  0% { top: -40%; } 100% { top: 140%; }
+}
+.v-connector-animated::after {
+  content: ''; position: absolute; bottom: -6px; left: 50%; transform: translateX(-50%);
+  width: 0; height: 0;
+  border-left: 5px solid transparent; border-right: 5px solid transparent;
+  border-top: 7px solid var(--gray-200);
+}
+
+/* dark mode overrides */
+@media (prefers-color-scheme: dark) {
+  .model-row { background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.1); }
+  .model-row.winner { background: rgba(59,109,17,0.15); border-color: var(--green-600); }
+  .chip { background: rgba(255,255,255,0.07); }
+  .feat-item { opacity: 0.9; }
+}
+</style>
+
+<div class="pipeline">
+
+  <!-- STAGE 1 -->
+  <div class="stage-row" id="s1">
+    <div class="stage-badge">Stage 1</div>
+    <div class="stage-content">
+      <div class="sources-grid">
+        <div class="source-card sc-blue">
+          <div class="corner-icon">📦</div>
+          <div class="file-name">train.csv</div>
+          <div class="file-rows">421,570 rows</div>
+          <div class="file-desc">Weekly sales · store · dept · holiday flag</div>
+        </div>
+        <div class="source-card sc-teal">
+          <div class="corner-icon">🌡</div>
+          <div class="file-name">features.csv</div>
+          <div class="file-rows">8,190 rows</div>
+          <div class="file-desc">Temperature · fuel · CPI · unemployment · markdowns</div>
+        </div>
+        <div class="source-card sc-amber">
+          <div class="corner-icon">🏪</div>
+          <div class="file-name">stores.csv</div>
+          <div class="file-rows">45 rows</div>
+          <div class="file-desc">Store type A/B/C · size (sq ft)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="v-connector-animated" id="c1"></div>
+
+  <!-- STAGE 2 -->
+  <div class="stage-row" id="s2">
+    <div class="stage-badge">Stage 2</div>
+    <div class="stage-content">
+      <div class="ingestion-block">
+        <div class="ingestion-icon">⚡</div>
+        <div class="ingestion-text" style="flex:1">
+          <div class="title">PySpark ingestion & cleaning</div>
+          <div class="sub">Left join on Store + Date → master_df · 421,570 rows · 17 columns</div>
+          <div class="ingestion-chips">
+            <span class="chip">Null imputation → 0.0</span>
+            <span class="chip">Duplicate column resolution</span>
+            <span class="chip">Type casting</span>
+            <span class="chip">Schema validation</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="v-connector-animated" id="c2"></div>
+
+  <!-- STAGE 3 -->
+  <div class="stage-row" id="s3">
+    <div class="stage-badge">Stage 3</div>
+    <div class="stage-content">
+      <div class="feature-grid">
+        <div class="feat-card fc-blue">
+          <div class="feat-label">Calendar</div>
+          <div class="feat-items">
+            <div class="feat-item">Year</div>
+            <div class="feat-item">Month</div>
+            <div class="feat-item">WeekOfYear</div>
+          </div>
+        </div>
+        <div class="feat-card fc-purple">
+          <div class="feat-label">Lag features</div>
+          <div class="feat-items">
+            <div class="feat-item">Weekly_Sales_lag1</div>
+            <div class="feat-item">Weekly_Sales_lag2</div>
+          </div>
+        </div>
+        <div class="feat-card fc-amber">
+          <div class="feat-label">Rolling average</div>
+          <div class="feat-items">
+            <div class="feat-item">MA4 (4-week avg)</div>
+            <div class="feat-item">Smoothed trend</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="v-connector-animated" id="c3"></div>
+
+  <!-- STAGE 4 -->
+  <div class="stage-row" id="s4">
+    <div class="stage-badge">Stage 4</div>
+    <div class="stage-content">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--gray-600);margin-bottom:10px">Model comparison · RMSE ↓ better</div>
+      <div class="model-leaderboard" id="leaderboard">
+        <div class="model-row winner" data-rmse="3317" data-max="5283">
+          <span class="winner-badge">Winner</span>
+          <span class="model-name">XGBoost</span>
+          <div class="model-rmse-bar-wrap">
+            <div class="model-rmse-label">RMSE 3,317</div>
+            <div class="rmse-bar-track"><div class="rmse-bar-fill" style="background:var(--green-600)" data-w="62.8"></div></div>
+          </div>
+        </div>
+        <div class="model-row" data-rmse="3798" data-max="5283">
+          <span style="width:52px"></span>
+          <span class="model-name">Linear regression</span>
+          <div class="model-rmse-bar-wrap">
+            <div class="model-rmse-label">RMSE 3,798</div>
+            <div class="rmse-bar-track"><div class="rmse-bar-fill" style="background:var(--blue-200)" data-w="71.9"></div></div>
+          </div>
+        </div>
+        <div class="model-row" data-rmse="4269" data-max="5283">
+          <span style="width:52px"></span>
+          <span class="model-name">GBT Regressor</span>
+          <div class="model-rmse-bar-wrap">
+            <div class="model-rmse-label">RMSE 4,269</div>
+            <div class="rmse-bar-track"><div class="rmse-bar-fill" style="background:var(--amber-200)" data-w="80.8"></div></div>
+          </div>
+        </div>
+        <div class="model-row" data-rmse="5020" data-max="5283">
+          <span style="width:52px"></span>
+          <span class="model-name">Decision tree</span>
+          <div class="model-rmse-bar-wrap">
+            <div class="model-rmse-label">RMSE 5,020</div>
+            <div class="rmse-bar-track"><div class="rmse-bar-fill" style="background:var(--coral-200)" data-w="95.0"></div></div>
+          </div>
+        </div>
+        <div class="model-row" data-rmse="5283" data-max="5283">
+          <span style="width:52px"></span>
+          <span class="model-name">Random forest</span>
+          <div class="model-rmse-bar-wrap">
+            <div class="model-rmse-label">RMSE 5,283</div>
+            <div class="rmse-bar-track"><div class="rmse-bar-fill" style="background:var(--gray-200)" data-w="100"></div></div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:10px;font-size:11px;color:var(--gray-600)">Top features: lag1 sales · 4-week MA · holiday indicator · store type</div>
+    </div>
+  </div>
+
+  <div class="v-connector-animated" id="c4"></div>
+
+  <!-- STAGE 5 -->
+  <div class="stage-row" id="s5">
+    <div class="stage-badge">Stage 5</div>
+    <div class="stage-content">
+      <div class="biz-grid">
+        <div class="biz-card bc-coral">
+          <div class="biz-icon">👥</div>
+          <div class="biz-title">Workforce surge plan</div>
+          <div class="biz-body">Tiered holiday staffing based on projected demand. Store 13 and Store 10 require peak hiring; flat-demand stores hold headcount.</div>
+          <div class="biz-kpi">82</div>
+          <div class="biz-kpi-label">temp hires for high-surge stores</div>
+        </div>
+        <div class="biz-card bc-blue">
+          <div class="biz-icon">🚚</div>
+          <div class="biz-title">Supply chain risk matrix</div>
+          <div class="biz-body">Stores plotted by physical size vs projected demand. Small high-volume stores flagged as red-zone — daily cross-docking required.</div>
+          <div class="biz-kpi">Daily</div>
+          <div class="biz-kpi-label">replenishment for red-zone stores</div>
+        </div>
+        <div class="biz-card bc-purple">
+          <div class="biz-icon">🛒</div>
+          <div class="biz-title">Localized assortment</div>
+          <div class="biz-body">Top 3 performing departments identified per store. Ends the one-planogram-fits-all model with hyper-local shelf-space allocation.</div>
+          <div class="biz-kpi">Top 3</div>
+          <div class="biz-kpi-label">depts per store, store-specific</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KEY FINDING -->
+  <div class="finding-bar" id="finding">
+    <div class="finding-icon">💡</div>
+    <div class="finding-text">
+      <div class="label">Key finding</div>
+      <div class="body">Sales are driven by lag momentum and seasonality — not macroeconomics. Last week's sales are the single strongest predictor. CPI, fuel price, and unemployment have negligible weekly impact. XGBoost outperforms linear baselines by 13% on RMSE.</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const delay = (ms) => new Promise(r => setTimeout(r, ms));
+
+async function animate() {
+  await delay(200);
+
+  const stages = ['s1','s2','s3','s4','s5'];
+  const connectors = ['c1','c2','c3','c4'];
+
+  for (let i = 0; i < stages.length; i++) {
+    document.getElementById(stages[i]).classList.add('visible');
+    await delay(350);
+    if (connectors[i]) {
+      document.getElementById(connectors[i]).classList.add('visible');
+      await delay(300);
+    }
+  }
+
+  // Animate RMSE bars
+  await delay(200);
+  document.querySelectorAll('.rmse-bar-fill').forEach(bar => {
+    const w = bar.getAttribute('data-w');
+    bar.style.width = w + '%';
+  });
+
+  await delay(800);
+  document.getElementById('finding').classList.add('visible');
+}
+
+animate();
+</script>
